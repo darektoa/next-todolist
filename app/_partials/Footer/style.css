@@ -1,0 +1,15 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.app__footer {
+    @apply w-full
+        mt-auto
+        bg-gray-50
+        px-5
+        py-10;
+}
+
+.app__footer__copyright {
+    @apply font-semibold;
+}

@@ -1,113 +1,305 @@
-import Image from 'next/image'
+'use client';
+import { useEffect, useState } from 'react';
+import { Link } from '@chakra-ui/next-js';
+import {
+    Box,
+    Button,
+    Card,
+    CardHeader,
+    CardBody,
+    CardFooter,
+    FormControl,
+    FormLabel,
+    Heading,
+    Input,
+    Modal,
+    ModalOverlay,
+    ModalContent,
+    ModalHeader,
+    ModalFooter,
+    ModalBody,
+    ModalCloseButton,
+    Stack,
+    StackDivider,
+    Text
+} from '@chakra-ui/react';
 
-export default function Home() {
-  return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <div className="z-10 max-w-5xl w-full items-center justify-between font-mono text-sm lg:flex">
-        <p className="fixed left-0 top-0 flex w-full justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto  lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
-          Get started by editing&nbsp;
-          <code className="font-mono font-bold">app/page.js</code>
-        </p>
-        <div className="fixed bottom-0 left-0 flex h-48 w-full items-end justify-center bg-gradient-to-t from-white via-white dark:from-black dark:via-black lg:static lg:h-auto lg:w-auto lg:bg-none">
-          <a
-            className="pointer-events-none flex place-items-center gap-2 p-8 lg:pointer-events-auto lg:p-0"
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{' '}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className="dark:invert"
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
-        </div>
-      </div>
+async function getTodos() {
+    const query = 'username=admin&password=password123';
+    const response = await fetch(`http://localhost:3000/api/todos?${query}`);
+    const resJSON = await response.json();
 
-      <div className="relative flex place-items-center before:absolute before:h-[300px] before:w-[480px] before:-translate-x-1/2 before:rounded-full before:bg-gradient-radial before:from-white before:to-transparent before:blur-2xl before:content-[''] after:absolute after:-z-20 after:h-[180px] after:w-[240px] after:translate-x-1/3 after:bg-gradient-conic after:from-sky-200 after:via-blue-200 after:blur-2xl after:content-[''] before:dark:bg-gradient-to-br before:dark:from-transparent before:dark:to-blue-700 before:dark:opacity-10 after:dark:from-sky-900 after:dark:via-[#0141ff] after:dark:opacity-40 before:lg:h-[360px] z-[-1]">
-        <Image
-          className="relative dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert"
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
-
-      <div className="mb-32 grid text-center lg:max-w-5xl lg:w-full lg:mb-0 lg:grid-cols-4 lg:text-left">
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Docs{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Find in-depth information about Next.js features and API.
-          </p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800 hover:dark:bg-opacity-30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Learn{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Learn about Next.js in an interactive course with&nbsp;quizzes!
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Templates{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Explore starter templates for Next.js.
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Deploy{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
-  )
+    return resJSON?.data;
 }
+
+async function deleteTodoById(id) {
+    const headers = new Headers();
+    headers.append("Content-Type", "application/x-www-form-urlencoded");
+
+    const urlencoded = new URLSearchParams();
+    urlencoded.append("id", id);
+
+    const query = 'username=admin&password=password123';
+    const response = await fetch(`http://localhost:3000/api/todos?${query}`, {
+        method: 'DELETE',
+        headers: headers,
+        body: urlencoded,
+    });
+    const resJSON = await response.json();
+
+    return resJSON?.data;
+}
+
+function Page() {
+    const [currentTodo, setCurrentTodo] = useState({});
+    const [isCreateOpen, setIsCreateOpen] = useState(false);
+    const [isEditOpen, setIsEditOpen] = useState(false);
+    const [todos, setTodos] = useState(
+        JSON?.parse(localStorage.getItem('todos') || '[]')
+    );
+
+    function randomId() {
+        return Math.round(Math.random()*10_000_000);
+    }
+
+    function handleEditTodo(todoIndex) {
+        setIsEditOpen(todoIndex);
+        setCurrentTodo(todos[todoIndex]);
+    }
+
+    function handleDeleteTodo(todoId) {
+        const tempTodos = Array.from(todos);
+        const result = tempTodos
+            .map(todo => todo?.id === todoId ? null : todo)
+            .filter(todo => todo !== null);
+
+        deleteTodoById(todoId).then(data => console.log(data));
+        setTodos(result);
+    }
+
+    useEffect(() => {
+        localStorage.setItem('todos', JSON.stringify(todos));
+        console.log(todos);
+    }, [todos]);
+
+    useEffect(() => {
+        getTodos()
+            .then(data => setTodos(data));
+    }, []);
+
+    return (
+        <main className='px-5 py-10'>
+            <Card>
+                <CardHeader className='flex items-center'>
+                    <Heading size='lg'>My Todo-List</Heading>
+                    <Button
+                        className='ml-auto'
+                        colorScheme="blue"
+                        onClick={() => {
+                            setIsCreateOpen(true)
+                        }}
+                    >
+                        Add Todo
+                    </Button>
+                </CardHeader>
+
+                <CardBody>
+                    <Stack divider={<StackDivider />} spacing='4'>
+
+                        {todos.map((todo, index) => (
+                            <Box key={`todo-item-${index}`} className='flex'>
+                                <Box className='flex flex-col'>
+                                    <Heading size='md' textTransform='uppercase'>
+                                        <Link href={`/todo/${todo?.id}`}>
+                                            {todo?.title}
+                                        </Link>
+                                    </Heading>
+                                    <Text fontSize='xs'>
+                                        Deadline: {(new Date(todo?.end_time))?.toDateString?.()}
+                                    </Text>
+                                    <Text pt='2' fontSize='md'>
+                                        {todo?.descriptionription}
+                                    </Text>
+                                </Box>
+
+                                <Box className='ml-auto flex items-center'>
+                                    <Button
+                                        className='ml-2'
+                                        colorScheme="yellow"
+                                        onClick={() => handleEditTodo(index)}
+                                    >
+                                        Edit
+                                    </Button>
+                                    <Button
+                                        className='ml-2'
+                                        colorScheme="red"
+                                        onClick={() => handleDeleteTodo(todo?.id)}
+                                    >
+                                        Delete
+                                    </Button>
+                                </Box>
+                            </Box>
+                        ))}
+
+                    </Stack>
+                </CardBody>
+            </Card>
+
+
+            { /* MODAL CREATE TODO */ }
+            <Modal
+                isOpen={isCreateOpen}
+                onClose={() => setIsCreateOpen(false)}
+            >
+                <ModalOverlay />
+                <ModalContent>
+                    <ModalHeader>Add Todo</ModalHeader>
+                    <ModalCloseButton />
+                    <ModalBody pb={6}>
+                        <FormControl>
+                            <FormLabel>Title</FormLabel>
+                            <Input 
+                                placeholder='Title'
+                                onInput={(e) => {
+                                    setCurrentTodo((todo) => ({
+                                        ...todo,
+                                        title: e.target.value,
+                                    }))
+                                }} 
+                            />
+                        </FormControl>
+
+                        <FormControl mt={4}>
+                            <FormLabel>Description</FormLabel>
+                            <Input 
+                                placeholder='Description'
+                                onInput={(e) => {
+                                    setCurrentTodo((todo) => ({
+                                        ...todo,
+                                        description: e.target.value,
+                                    }))
+                                }}
+                            />
+                        </FormControl>
+
+                        <FormControl mt={4}>
+                            <FormLabel>End Time</FormLabel>
+                            <Input
+                                type='datetime-local'
+                                onInput={(e) => {
+                                    setCurrentTodo((todo) => ({
+                                        ...todo,
+                                        end_time: (new Date(e.target.value)).getTime(),
+                                    }))
+                                }} 
+                            />
+                        </FormControl>
+                    </ModalBody>
+
+                    <ModalFooter>
+                        <Button
+                            colorScheme='blue'
+                            mr={3}
+                            onClick={() => {
+                                setTodos((todos) => ([
+                                    ...todos,
+                                    {
+                                        id: randomId(),
+                                        ...currentTodo,
+                                    },
+                                ]))
+                                setIsCreateOpen(false)
+                                setCurrentTodo({});
+                            }}
+                        >
+                            Save
+                        </Button>
+                        <Button 
+                            onClick={() => setIsCreateOpen(false)}
+                        >
+                            Cancel
+                        </Button>
+                    </ModalFooter>
+                </ModalContent>
+            </Modal>
+
+
+            { /* MODAL EDIT TODO */ }
+            <Modal
+                isOpen={isEditOpen !== false}
+                onClose={() => setIsEditOpen(false)}
+            >
+                <ModalOverlay />
+                <ModalContent>
+                    <ModalHeader>Edit Todo</ModalHeader>
+                    <ModalCloseButton />
+                    <ModalBody pb={6}>
+                        <FormControl>
+                            <FormLabel>Title</FormLabel>
+                            <Input 
+                                defaultValue={currentTodo?.title}
+                                placeholder='Title'
+                                onInput={(e) => {
+                                    setCurrentTodo((todo) => ({
+                                        ...todo,
+                                        title: e.target.value,
+                                    }))
+                                }} 
+                            />
+                        </FormControl>
+
+                        <FormControl mt={4}>
+                            <FormLabel>Description</FormLabel>
+                            <Input 
+                                defaultValue={currentTodo?.description}
+                                placeholder='Description'
+                                onInput={(e) => {
+                                    setCurrentTodo((todo) => ({
+                                        ...todo,
+                                        description: e.target.value,
+                                    }))
+                                }}
+                            />
+                        </FormControl>
+
+                        <FormControl mt={4}>
+                            <FormLabel>End Time</FormLabel>
+                            <Input
+                                defaultValue={currentTodo?.end_time}
+                                type='datetime-local'
+                                onInput={(e) => {
+                                    setCurrentTodo((todo) => ({
+                                        ...todo,
+                                        end_time: new Date(e.target.value),
+                                    }))
+                                }} 
+                            />
+                        </FormControl>
+                    </ModalBody>
+
+                    <ModalFooter>
+                        <Button
+                            colorScheme='blue'
+                            mr={3}
+                            onClick={() => {
+                                const newTodos = Array.from(todos);
+                                newTodos[isEditOpen] = currentTodo;
+                                setTodos(newTodos);
+                                setIsEditOpen(false)
+                            }}
+                        >
+                            Save
+                        </Button>
+                        <Button 
+                            onClick={() => setIsEditOpen(false)}
+                        >
+                            Cancel
+                        </Button>
+                    </ModalFooter>
+                </ModalContent>
+            </Modal>
+        </main>
+    )
+}
+
+export default Page;
